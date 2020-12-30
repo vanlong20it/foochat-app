@@ -62,12 +62,6 @@
     align-items: center;
     justify-content: center;
 }
-.display-title {
-    font-size: 45px;
-    line-height: 45px;
-    padding: 10px 0px;
-    padding-left: 20px;
-}
 
 .display-5 {
     font-size: 20px;
@@ -78,20 +72,23 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color:#f1f1f1;
+    background-color: #f1f1f1;
     .title-name {
         background-color: lightgoldenrodyellow;
-        padding: 10px 0px;
+        padding: 7px 0px;
         padding-left: 20px;
         display: flex;
         align-items: center;
-        h1 {
+        .display-title {
             margin: 0;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 30px;
+            line-height: 45px;
+            padding-left: 10px;
         }
         img {
-            width: 50px;
-            height: 50px;
+            width: 30px;
+            height: 30px;
         }
     }
     &::after {
@@ -115,9 +112,10 @@
                 }
             }
             .round-message {
-                padding:0 10px;
+                padding: 0 10px;
                 .chat-list {
                     height: 510px;
+                    padding:0px 10px;
                     overflow-y: auto;
                     &::-webkit-scrollbar-thumb {
                         background-color: #89c7fa;
@@ -128,19 +126,43 @@
                     .detail {
                         clear: both;
                         text-align: right;
-                        p {
+                        position: relative;
+                        .round-item {
                             display: inline-block;
-                            margin: 0;
-                            margin-top: 3px;
-                            padding: 10px;
-                            max-width: 400px;
-                            background-color: lightgoldenrodyellow;
-                            border-radius: 10px;
+                            transition-delay: 2s;
+                            .info {
+                                font-size: 12px;
+                                font-weight: 500;
+                                position: absolute;
+                                top: -15px;
+                                right: 0;
+                                background-color: #fff;
+                                visibility: hidden;
+                            }
+                            &:hover {
+                                .info {
+                                    visibility: visible;
+                                }
+                            }
+                            p {
+                                margin: 0;
+                                margin-top: 3px;
+                                padding: 10px;
+                                max-width: 400px;
+                                background-color: #b2bec3;
+                                border-radius: 10px;
+                            }
                         }
                         &.active-user {
                             text-align: left;
-                            p {
-                                background-color: #bbdefb;
+                            .round-item {
+                                .info {
+                                    left: 0;
+                                    right:unset;
+                                }
+                                p {
+                                    background-color: #bbdefb;
+                                }
                             }
                         }
                     }
@@ -148,6 +170,7 @@
             }
             .input-box {
                 position: relative;
+                margin-top: 10px;
                 .input-message {
                     .chat-input {
                         font-size: 18px;
@@ -157,13 +180,6 @@
                             border-radius: 0px;
                         }
                     }
-                }
-                .other-typing{
-                    position:absolute;
-                    left:0px;
-                    top:-25px;
-                    color:#89c7fa;
-                    font-weight:500;
                 }
                 .send-message {
                     display: inline-block;
@@ -262,7 +278,6 @@
                 }
                 .last-message {
                     font-size: 14px;
-                    font-style: italic;
                     .name {
                         font-weight: 600;
                         font-style: normal;

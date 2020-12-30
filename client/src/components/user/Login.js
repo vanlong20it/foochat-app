@@ -102,10 +102,10 @@ const Login = () => {
                     </button>
                     <div className="direct-page">
                         <div className="page-item">
-                            <NavLink to="/register">Đăng ký</NavLink>
+                            <NavLink to="/register" className="btn btn-info">Đăng ký</NavLink>
                         </div>
                         <div className="page-item admin">
-                            <NavLink to="/admin">Đăng nhập admin</NavLink>
+                            <NavLink to="/admin" className="btn btn-info">Đăng nhập admin</NavLink>
                         </div>
                     </div>
                 </form>

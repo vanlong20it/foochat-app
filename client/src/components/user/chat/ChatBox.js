@@ -23,9 +23,7 @@ const ChatBox = ({ chatId, userId }) => {
     const [username, setUsername] = useState("");
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
-    const [otherTyping, setOtherTyping] = useState(false);
     const [openEmoji, setOpenEmoji] = useState("none");
-
     const onEmojiClick = (event, emojiObject) => {
         setInputMessage((inputMessage) => [...inputMessage, emojiObject.emoji]);
     };
@@ -103,21 +101,9 @@ const ChatBox = ({ chatId, userId }) => {
                         setMessages(messageList);
                     }
                 });
-
-                socket.on("user-typing", ({ cid, uid, isTyping, name }) => {
-                    console.log("user-typing: ",isTyping);
-                    if (cid === cvs._id && uid !== userId) {
-                        setOtherUsername(name);
-                        if (isTyping !== otherTyping) {
-                            setOtherTyping(isTyping);
-                        } else {
-                            setOtherTyping(false);
-                        }
-                    }
-                });
             }
         }
-    }, [setMessages, cvs._id, isReady, otherTyping, userId]);
+    }, [setMessages, cvs._id, isReady]);
 
     //Update messages list
     useEffect(() => {
@@ -132,6 +118,17 @@ const ChatBox = ({ chatId, userId }) => {
             }
         }
     }, [isReady, newMessage, cvs._id]);
+
+    //Logout
+    const handleLogout = () => {
+        let confirm = window.confirm("Bạn có muốn đăng xuất!");
+        if (confirm === true) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userid");
+            localStorage.removeItem("username");
+            history.replace("/");
+        }
+    };
 
     //Send message
     const sendMessage = () => {
@@ -170,17 +167,6 @@ const ChatBox = ({ chatId, userId }) => {
         });
     };
 
-    //Logout
-    const handleLogout = () => {
-        let confirm = window.confirm("Bạn có muốn đăng xuất!");
-        if (confirm === true) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userid");
-            localStorage.removeItem("username");
-            history.replace("/");
-        }
-    };
-
     // Scroll to bottom
     useEffect(() => {
         animateScroll.scrollToBottom({
@@ -189,6 +175,7 @@ const ChatBox = ({ chatId, userId }) => {
             duration: 0,
         });
     }, [messages]);
+
     return (
         <div className="chat-box">
             <nav className="nav-chat height-1">
@@ -207,11 +194,21 @@ const ChatBox = ({ chatId, userId }) => {
                     {messages.map((item, index) =>
                         item.of_user === userId ? (
                             <div key={index} className="detail user">
-                                <p>{item.content}</p>
+                                <div className="round-item">
+                                    <span className="info">
+                                        {new Date(item.time).toLocaleString()}
+                                    </span>
+                                    <p>{item.content}</p>
+                                </div>
                             </div>
                         ) : (
                             <div key={index} className="detail active-user">
-                                <p>{item.content}</p>
+                                <div className="round-item">
+                                    <span className="info">
+                                        {new Date(item.time).toLocaleString()}
+                                    </span>
+                                    <p>{item.content}</p>
+                                </div>
                             </div>
                         )
                     )}
@@ -229,29 +226,16 @@ const ChatBox = ({ chatId, userId }) => {
                         type="text"
                         onChange={(e) => {
                             setInputMessage(e.target.value);
-                            socket.emit("user-typing-message", {
-                                cid: chatId,
-                                uid: userId,
-                                isTyping: true,
-                                name: username,
-                            });
                         }}
                         value={inputMessage}
                     />
                 </div>
-                {otherTyping ? (
-                    <div className="typing">
-                        {otherUsername} đang trả lời...
-                    </div>
-                ) : null}
                 <div className="send-message">
                     <button
                         className="chat-btn"
                         onClick={() => {
                             sendMessage();
-                            openEmoji === "block"
-                                ? setOpenEmoji("none")
-                                : setOpenEmoji("block");
+                            openEmoji === "block" ? setOpenEmoji("none") : "";
                         }}
                     >
                         {<img src={send} alt="Send" />}

@@ -23,7 +23,6 @@ const ChatBox = ({ chatId, userId }) => {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
     const [openEmoji, setOpenEmoji] = useState("none");
-    const [otherTyping, setOtherTyping] = useState(false);
 
     const onEmojiClick = (event, emojiObject) => {
         setInputMessage((inputMessage) => [...inputMessage, emojiObject.emoji]);
@@ -90,22 +89,9 @@ const ChatBox = ({ chatId, userId }) => {
                         setMessages(messageList);
                     }
                 });
-
-                socket.on("user-typing", ({ cid, uid, isTyping, name }) => {
-                    console.log("user-typing");
-                    console.log("isTyping: ", isTyping);
-                    if (cid === cvs._id && uid !== userId) {
-                        setOtherUsername(name);
-                        if (isTyping !== otherTyping) {
-                            setOtherTyping(isTyping);
-                        } else {
-                            setOtherTyping(false);
-                        }
-                    }
-                });
             }
         }
-    }, [setMessages, cvs._id, isReady, otherTyping, userId]);
+    }, [setMessages, cvs._id, isReady]);
 
     //Update message list
     useEffect(() => {
@@ -170,6 +156,7 @@ const ChatBox = ({ chatId, userId }) => {
         });
     };
 
+    // Scroll to bottom
     useEffect(() => {
         animateScroll.scrollToBottom({
             containerId: "list",
@@ -195,11 +182,21 @@ const ChatBox = ({ chatId, userId }) => {
                     {messages.map((item, index) =>
                         item.of_user === userId ? (
                             <div key={index} className="detail user">
-                                <p>{item.content}</p>
+                                <div className="round-item">
+                                    <span className="info">
+                                        {new Date(item.time).toLocaleString()}
+                                    </span>
+                                    <p>{item.content}</p>
+                                </div>
                             </div>
                         ) : (
                             <div key={index} className="detail active-user">
-                                <p>{item.content}</p>
+                                <div className="round-item">
+                                    <span className="info">
+                                        {new Date(item.time).toLocaleString()}
+                                    </span>
+                                    <p>{item.content}</p>
+                                </div>
                             </div>
                         )
                     )}
@@ -216,22 +213,10 @@ const ChatBox = ({ chatId, userId }) => {
                             type="text"
                             onChange={(e) => {
                                 setInputMessage(e.target.value);
-                                socket.emit("user-typing-message", {
-                                    cid: chatId,
-                                    uid: userId,
-                                    isTyping: true,
-                                    name: username,
-                                });
                             }}
                             value={inputMessage}
                         />
                     </div>
-                    {otherTyping ? (
-                        <div className="other-typing">
-                            {otherUsername} đang trả lời...
-                        </div>
-                    ) : null}
-                    <div className="other-typing">is answering!!</div>
                     <div className="send-message">
                         <button
                             className="chat-btn"

@@ -11,19 +11,48 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [cfm_password, setCfmPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState([]);
     const [local, setLocal] = useState("");
     useEffect(() => {
         setLocal(url.LOCAL);
     }, []);
 
+    const validate = () => {
+        setMessage([]);
+        let flag = true;
+        if (username === "" || password === "" || cfm_password === "") {
+            setMessage((message) => [
+                ...message,
+                "*Vui lòng điền đầy đủ thông tin",
+            ]);
+            flag = false;
+        }
+        if (password !== cfm_password) {
+            setMessage((message) => [...message, "*Password không trùng nhau"]);
+            flag = false;
+        }
+        if (username.length < 5 || password.length < 5) {
+            setMessage((message) => [
+                ...message,
+                "*username, password phải nhiều hơn 5 ký tự!",
+            ]);
+            flag = false;
+        }
+        if (username.includes(" ") || password.includes(" ")) {
+            setMessage((message) => [
+                ...message,
+                "*username, password không được chứa khoảng trắng!",
+            ]);
+            flag = false;
+        }
+        if (!flag) {
+            return false;
+        }
+    };
+
     async function handleSubmit(e) {
         e.preventDefault();
-        if (username === "" || password === "" || cfm_password === "") {
-            setMessage("*Vui lòng điền đầy đủ thông tin");
-            return;
-        } else if (password !== cfm_password) {
-            setMessage("*Password không trùng nhau");
+        if (!validate()) {
             return;
         }
         const info = {
@@ -105,10 +134,13 @@ const Login = () => {
                                 onChange={(e) => setCfmPassword(e.target.value)}
                             />
                         </div>
-                        <div className="message">
-                            <p>
-                                <strong>{message}</strong>
-                            </p>
+                        <div className="message text-danger text-left">
+                            {message.length>=1 &&
+                                message.map((item, index) => (
+                                    <p key={index}>
+                                        <strong>{item}</strong>
+                                    </p>
+                                ))}
                         </div>
                         <button
                             className="btn btn-primary"
@@ -118,7 +150,9 @@ const Login = () => {
                         </button>
                         <div className="direct-page">
                             <div className="page-item">
-                                <NavLink to="/">Login</NavLink>
+                                <NavLink to="/" className="btn btn-info">
+                                    Login
+                                </NavLink>
                             </div>
                         </div>
                     </form>
