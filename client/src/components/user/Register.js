@@ -18,6 +18,11 @@ const Login = () => {
     }, []);
 
     const validate = () => {
+        
+    };
+
+    async function handleSubmit(e) {
+        e.preventDefault();
         setMessage([]);
         let flag = true;
         if (username === "" || password === "" || cfm_password === "") {
@@ -46,13 +51,6 @@ const Login = () => {
             flag = false;
         }
         if (!flag) {
-            return false;
-        }
-    };
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        if (!validate()) {
             return;
         }
         const info = {
