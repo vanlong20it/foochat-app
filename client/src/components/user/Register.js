@@ -17,9 +17,7 @@ const Login = () => {
         setLocal(url.LOCAL);
     }, []);
 
-    const validate = () => {
-        
-    };
+    const validate = () => {};
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -70,7 +68,8 @@ const Login = () => {
         };
         request.post(options, (err, httpResponse, body) => {
             if (httpResponse.statusCode !== 200) {
-                setMessage(JSON.parse(body).message);
+                const result = JSON.parse(body).message;
+                setMessage((message) => [...message, result]);
                 return;
             } else {
                 history.push("/");
@@ -133,7 +132,7 @@ const Login = () => {
                             />
                         </div>
                         <div className="message text-danger text-left">
-                            {message.length>=1 &&
+                            {message.length >= 1 &&
                                 message.map((item, index) => (
                                     <p key={index}>
                                         <strong>{item}</strong>
