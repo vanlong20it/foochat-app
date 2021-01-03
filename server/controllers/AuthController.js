@@ -2,7 +2,6 @@ const User = require("../models/User");
 const Conversation = require("../models/Conversation");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { Schema, Mongoose } = require("mongoose");
 const keys = "secret";
 const USERNAME = "longnguyen";
 const PASSWORD = "longnguyen";
@@ -23,7 +22,6 @@ exports.register = async (req, res) => {
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newAdmin.password, salt, (err, hash) => {
                     if (err) {
-                        console.log("Checkpoint 25:", err);
                         return;
                     }
                     newAdmin.password = hash;
@@ -41,6 +39,11 @@ exports.register = async (req, res) => {
     });
 
     const { username, password } = req.body;
+    if (username === USERNAME) {
+        return res
+            .status(202)
+            .json({ message: "Tên người dùng đã tồn tại!" });
+    }
     const user = await User.findOne({ username: username });
     if (user)
         return res.status(202).json({ message: "Tên người dùng đã tồn tại!" });
@@ -56,8 +59,6 @@ exports.register = async (req, res) => {
             newUser
                 .save()
                 .then((user) => {
-                    console.log("Checkpoint 61: ", user);
-                    console.log("Checkpoint 62: ", admin_1);
                     if (admin_1) {
                         const id1 = admin_1._id;
                         const username1 = admin_1.username;
