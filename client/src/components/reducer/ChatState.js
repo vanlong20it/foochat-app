@@ -10,7 +10,6 @@ const initialState = {
     refresh: false,
     newMessage: { cid: "", message: {} },
     isEmojiShow: false,
-    inputEvent: {},
 };
 
 export const GlobalContext = createContext(initialState);
@@ -43,7 +42,9 @@ export const GlobalProvider = ({ children }) => {
             });
         })();
         // eslint-disable-next-line no-unused-vars
-        return () => {isSubscribed = false};
+        return () => {
+            isSubscribed = false;
+        };
     }, []);
 
     const updateConversations = (cs) => {
@@ -70,10 +71,6 @@ export const GlobalProvider = ({ children }) => {
         dispatch({ type: "new-message", conversation, message });
     };
 
-    const updateInputEvent = (inputEvent) => {
-        dispatch({ type: "update-input", inputEvent });
-    };
-
     return (
         <GlobalContext.Provider
             value={{
@@ -82,14 +79,12 @@ export const GlobalProvider = ({ children }) => {
                 isEmojiShow: state.isEmojiShow,
                 isReady: state.ready,
                 refresh: state.refresh,
-                inputEvent: state.inputEvent,
                 updateRefresh: updateRefresh,
                 updateConversations: updateConversations,
                 updateConversation: updateConversation,
                 getConversation: getConversation,
                 addConversation: addConversation,
                 addNewMessage: addNewMessage,
-                updateInputEvent: updateInputEvent,
             }}
         >
             {children}

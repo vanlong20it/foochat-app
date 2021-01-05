@@ -96,7 +96,7 @@ const Login = () => {
                     </button>
                     <div className="direct-page">
                         <div className="page-item">
-                            <NavLink to="/register">Register</NavLink>
+                            <NavLink to="/register" className="btn btn-info">Register</NavLink>
                         </div>
                     </div>
                 </form>

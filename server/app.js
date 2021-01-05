@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 require("./configs/Passport")(passport);
+app.use(express.static('public'));
 app.use("/api", api);
 
 const server = require("http").Server(app);

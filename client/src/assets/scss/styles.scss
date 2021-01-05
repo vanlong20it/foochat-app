@@ -73,6 +73,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #f1f1f1;
+    &.active-form {
+        -webkit-box-shadow: 2px 5px 12px 1px rgba(0, 0, 0, 0.64);
+        box-shadow: 2px 5px 12px 1px rgba(0, 0, 0, 0.64);
+    }
     .title-name {
         background-color: lightgoldenrodyellow;
         padding: 7px 0px;
@@ -304,6 +308,26 @@
             .round-message {
                 padding: 0px 10px;
             }
+        }
+    }
+}
+
+
+@media only screen and (max-width:576px){
+    .register,.login{
+        width:350px;
+        padding:20px 20px;
+        .title-page{
+            margin-bottom:20px;
+            h1{
+                font-size:2rem;
+            }
+        }
+    }
+    .chat-app{
+        width:350px;
+        .title-name{
+            display:none;
         }
     }
 }

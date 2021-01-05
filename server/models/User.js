@@ -19,6 +19,10 @@ const UserSchema = new Schema({
         type: String,
         default: "user",
     },
+    is_online: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const User = mongoose.model("User", UserSchema);

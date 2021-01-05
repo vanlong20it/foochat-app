@@ -85,7 +85,7 @@ const ListConversation = (props) => {
                                                     {item.l_sender}
                                                 </span>
                                                 :{" "}
-                                                {item.l_message}
+                                                {item.l_message.slice(0,20)}
                                             </div>
                                         </div>
                                     </NavLink>

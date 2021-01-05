@@ -29,6 +29,10 @@ const ChatBox = ({ chatId, userId }) => {
     };
 
     useEffect(() => {
+        socket.emit("user-login", localStorage.userid);
+    }, []);
+
+    useEffect(() => {
         if (isReady) {
             setCvs(getConversation(chatId));
             setUsername(localStorage.username);

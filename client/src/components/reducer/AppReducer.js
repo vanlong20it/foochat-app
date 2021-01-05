@@ -25,10 +25,6 @@ export default (state, action) => {
             };
         }
 
-        case "update-input": {
-            return { ...state, inputEvent: action.inputEvent };
-        }
-
         case "new-message": {
             return {
                 ...state,
@@ -38,6 +34,7 @@ export default (state, action) => {
                 },
             };
         }
+
         default:
             return state;
     }

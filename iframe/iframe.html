@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        iframe {
+            border: none;
+            width: 350px;
+            height: 650px;
+            position: fixed;
+            bottom: 7rem;
+            right: 5rem;
+        }
+
+        #btn-chat {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: transparent;
+            position: fixed;
+            bottom: 4rem;
+            right: 4rem;
+            background-image: url('http://localhost:5000/images/chat.png');
+            background-size:cover;
+        }
+
+        #hiden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- http://localhost:3000 -->
+    <div id="chat-app">
+        <iframe id="iframe-chat" src="" class="chat-box hiden"></iframe>
+        <div id="btn-chat"></div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('btn-chat');
+        const chat = document.getElementById('iframe-chat');
+        let show = false;
+        btn.onclick = () => {
+            console.log('click');
+            if (!show) {
+                console.log('show');
+                show = !show;
+                chat.setAttribute('src', 'http://localhost:3000');
+            } else {
+                console.log('hide');
+                show = !show;
+                chat.setAttribute('src', '');
+            }
+        }
+    </script>
+</body>
+
+</html>
