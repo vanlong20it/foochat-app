@@ -5,6 +5,13 @@
     padding: 0;
     font-family: "Roboto", sans-serif;
 }
+.context{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    top:0;
+    left:0;
+}
 .register,
 .login {
     width: 800px;
@@ -230,7 +237,7 @@
 .chat-admin {
     @extend .chat-app;
     width: 1000px;
-    height: 735px;
+    height: 720px;
     background-color: #eee;
     .main-content {
         width: 100%;

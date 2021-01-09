@@ -43,6 +43,14 @@ const Chat = (props) => {
     ) : (
         <GlobalProvider>
             <div
+                className="context"
+                onClick={() => {
+                    if (activeChat) {
+                        setActiveChat(false);
+                    }
+                }}
+            ></div>
+            <div
                 onClick={() => {
                     if (activeChat === false) {
                         setActiveChat(true);

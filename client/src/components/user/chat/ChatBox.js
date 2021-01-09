@@ -27,6 +27,7 @@ const ChatBox = ({ chatId, userId }) => {
     const onEmojiClick = (event, emojiObject) => {
         setInputMessage((inputMessage) => [...inputMessage, emojiObject.emoji]);
     };
+    const [status, setStatus] = useState(false);
 
     useEffect(() => {
         if (conversations) {
@@ -42,7 +43,15 @@ const ChatBox = ({ chatId, userId }) => {
 
     useEffect(() => {
         socket.emit("user-login", localStorage.userid);
-    }, []);
+        socket.on("seen", ({ status }) => {
+            console.log("Status: ", status);
+            if (status) {
+                setStatus(true);
+            } else {
+                setStatus(false);
+            }
+        });
+    }, [status]);
 
     useEffect(() => {
         if (isReady) {
@@ -185,7 +194,10 @@ const ChatBox = ({ chatId, userId }) => {
             <nav className="nav-chat height-1">
                 <div>
                     <p>Từ: {username}</p>
-                    <p>Đến: {otherUsername}</p>
+                    <p>
+                        Đến: {otherUsername} (
+                        {status && status ? "Đã xem" : "Đã gửi"})
+                    </p>
                 </div>
                 <div>
                     <button onClick={handleLogout} className="btn btn-danger">

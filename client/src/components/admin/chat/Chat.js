@@ -9,7 +9,7 @@ const Chat = (props) => {
     const [userId, setUserId] = useState("");
     const [chatId, setChatId] = useState("");
     const [activeChat, setActiveChat] = useState(false);
-    const timer = 5000;
+    const timer = 100000;
 
     useEffect(() => {
         document.title = "Admin";
@@ -18,6 +18,7 @@ const Chat = (props) => {
     useEffect(() => {
         setUserId(localStorage.userid);
         setChatId(props.match.params.id);
+        
         setActiveChat(true);
     }, [props.match.params.id]);
 
@@ -32,7 +33,10 @@ const Chat = (props) => {
     useEffect(() => {
         if (activeChat === true) {
             const interval = setTimeout(() => {
-                console.log("Da deactive");
+                socket.emit("seen", {
+                    chatid: chatId,
+                    status: false,
+                });
                 setActiveChat(false);
             }, timer);
             return () => clearTimeout(interval);
@@ -42,12 +46,32 @@ const Chat = (props) => {
     return localStorage.getItem("isadmin") === "true" ? (
         <GlobalProvider>
             <div
+                className="context"
+                onClick={() => {
+                    if (activeChat) {
+                        socket.emit("seen", {
+                            chatid: chatId,
+                            status: false,
+                        });
+                        setActiveChat(false);
+                    }
+                }}
+            ></div>
+            <div
                 onClick={() => {
                     if (activeChat === false) {
+                        socket.emit("seen", {
+                            chatid: chatId,
+                            status: true,
+                        });
                         setActiveChat(true);
                     }
                 }}
                 onChange={() => {
+                    socket.emit("seen", {
+                        chatid: chatId,
+                        status: true,
+                    });
                     setActiveChat(true);
                 }}
                 className={
